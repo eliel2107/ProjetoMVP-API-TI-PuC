@@ -1,0 +1,7 @@
+[2025-08-27 15:53:08,107] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:53:08] "POST /ativo HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
+[2025-08-27 15:53:32,144] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:53:32] "POST /ativo HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
+[2025-08-27 15:53:58,072] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:53:58] "POST /ativo HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
+[2025-08-27 15:54:08,630] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:54:08] "GET /ativos HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
+[2025-08-27 15:54:24,092] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:54:24] "GET /ativos?tipo=Notebook HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
+[2025-08-27 15:54:35,555] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:54:35] "GET /ativos?status=Em%20uso HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
+[2025-08-27 15:54:49,066] INFO _log() L187  127.0.0.1 - - [27/Aug/2025 15:54:49] "GET /ativos?nome=Monitor HTTP/1.1" 200 - - call_trace=C:\Users\HV6586\Downloads\Faculdade\.venv\Lib\site-packages\werkzeug\_internal.py L187 
