@@ -74,12 +74,6 @@ Para executar os testes, utilize o comando:
 pytest
 ```
 
-## 📌 Observações
-
-- A aplicação utiliza JWT para autenticação de usuários.
-- A documentação da API está disponível em formato Swagger.
-- Para facilitar o uso, foi criado um usuário administrador padrão com o email `admin@mail.com` e a senha `admin1234`.
-
 ## 📄 Licença
 
 Este projeto está licenciado sob a licença MIT.
