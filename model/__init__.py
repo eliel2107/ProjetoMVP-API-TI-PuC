@@ -27,17 +27,3 @@ if not database_exists(engine.url):
     create_database(engine.url) 
 
 # cria as tabelas do banco, caso não existam
-<<<<<<< HEAD
-Base.metadata.create_all(engine)
-=======
-Base.metadata.create_all(engine)
-def get_db():
-    """
-    Função 'Depends' que cria e fecha a sessão do banco.
-    """
-    db = Session() # 'Session' é a classe sessionmaker que você definiu acima 
-    try:
-        yield db
-    finally:
-        db.close()
->>>>>>> 7de88b0 (Atualizações Finais do Back-End)

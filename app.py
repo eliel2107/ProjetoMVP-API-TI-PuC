@@ -17,10 +17,27 @@ from schemas import (
 )
 from flask_cors import CORS
 
-info = Info(title="API de Estoque de TI", version="1.0.0")
+# Imports necessários para o comando init-db
+from model import engine
+from model.base import Base
+
+
+info = Info(title="API de Gestão de Ativos de TI", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
+# --- COMANDO CLI PARA INICIALIZAR O BANCO DE DADOS ---
+@app.cli.command("init-db")
+def init_db_command():
+    """Cria as tabelas do banco de dados a partir dos modelos."""
+    print("Iniciando a criação das tabelas no banco de dados...")
+    # O comando Base.metadata.create_all() usa a 'engine' para criar
+    # todas as tabelas que herdam de 'Base' (Ativo e Manutencao).
+    Base.metadata.create_all(engine)
+    print("Tabelas 'ativo' e 'manutencao' criadas com sucesso.")
+
+
+# --- DEFINIÇÃO DAS TAGS PARA O SWAGGER ---
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
 ativo_tag = Tag(name="Ativo", description="Adição, visualização, atualização e remoção de ativos de TI da base de dados")
 manutencao_tag = Tag(name="Manutenção", description="Adição, visualização, atualização e remoção de registros de manutenção")
@@ -75,35 +92,28 @@ def add_ativo():
 @app.get('/ativos', tags=[ativo_tag],
          responses={"200": ListagemAtivosSchema, "404": ErrorSchema})
 def get_ativos():
-    """Faz a busca por todos os Ativos de TI, permitindo filtragem opcional.
-    """
+    """Faz a busca por todos os Ativos de TI, permitindo filtragem opcional."""
     logger.debug("Coletando ativos com base nos filtros")
     
     with Session() as db:
-        # Inicia a query base
         db_query = db.query(Ativo)
-
-        # Pega os filtros opcionais da URL com request.args
+        
         nome_filtro = request.args.get('nome')
         tipo_filtro = request.args.get('tipo')
         status_filtro = request.args.get('status')
 
-        # Aplica os filtros na query se eles existirem
         if nome_filtro:
             search = f"%{nome_filtro}%"
             db_query = db_query.filter(Ativo.nome.ilike(search))
-
         if tipo_filtro:
             search = f"%{tipo_filtro}%"
             db_query = db_query.filter(Ativo.tipo.ilike(search))
-
         if status_filtro:
             search = f"%{status_filtro}%"
             db_query = db_query.filter(Ativo.status.ilike(search))
 
-        # Executa a query final
         ativos = db_query.all()
-
+        
         if not ativos:
             return {"ativos": []}, 200
         else:
@@ -154,7 +164,7 @@ def update_ativo():
         if update_data.nome: ativo.nome = update_data.nome
         if update_data.tipo: ativo.tipo = update_data.tipo
         if update_data.status: ativo.status = update_data.status
-        if update_data.valor_aquisicao: ativo.valor_aquisicao = update_data.valor_aquisicao
+        if update_data.valor_aquisicao is not None: ativo.valor_aquisicao = update_data.valor_aquisicao
         
         db.commit()
         logger.debug(f"Ativo atualizado: '{ativo.tag_patrimonio}'")
@@ -201,7 +211,7 @@ def add_manutencao():
             logger.warning(f"Erro ao adicionar manutenção ao ativo '{ativo_id}': {error_msg}")
             return {"message": error_msg}, 404
         
-        manutencao = Manutencao(manutencao_schema.descricao)
+        manutencao = Manutencao(descricao=manutencao_schema.descricao)
         ativo.adiciona_manutencao(manutencao)
         db.commit()
         logger.debug(f"Adicionada manutenção ao ativo #{ativo_id}")
@@ -221,7 +231,7 @@ def del_manutencao():
         db.commit()
         if count:
             logger.debug(f"Deletada manutenção #{manutencao_id}")
-            return {"message": "Manutenção removida", "id": manutencao_id}
+            return {"message": "Manutenção removida", "id": int(manutencao_id)}
         else:
             error_msg = "Manutenção não encontrada na base."
             logger.warning(f"Erro ao deletar manutenção '{manutencao_id}': {error_msg}")
@@ -252,6 +262,5 @@ def update_manutencao():
         manutencao.descricao = update_data.descricao
         db.commit()
         logger.debug(f"Atualizada manutenção #{manutencao_id}")
-        # Retorna o ativo pai com a lista de manutenções atualizada
         return apresenta_ativo(manutencao.ativo)
 

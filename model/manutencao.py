@@ -1,9 +1,9 @@
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from datetime import datetime
 from typing import Union
 
-from .base import Base
-
+from  model import Base
 
 class Manutencao(Base):
     __tablename__ = 'manutencao'
@@ -11,17 +11,20 @@ class Manutencao(Base):
     id = Column(Integer, primary_key=True)
     descricao = Column(String(4000))
     data_manutencao = Column(DateTime, default=datetime.now())
-
-    ativo_id = Column(Integer, ForeignKey("ativo.id"), nullable=False)
-
+    
+    # Chave estrangeira para o ativo
+    ativo_id = Column(Integer, ForeignKey('ativo.id'), nullable=False)
+    
+    # Relação com o ativo
+    ativo = relationship("Ativo", back_populates="manutencoes")
+    
     def __init__(self, descricao:str, data_manutencao:Union[DateTime, None] = None):
         """
-        Cria um Registro de Manutenção
+        Cria um registro de Manutenção
 
         Arguments:
-            descricao: A descrição do serviço ou ocorrência.
-            data_manutencao: Data de quando a manutenção foi realizada ou inserida
-                             na base.
+            descricao: descrição do serviço realizado.
+            data_manutencao: data de quando a manutenção foi feita.
         """
         self.descricao = descricao
         if data_manutencao:

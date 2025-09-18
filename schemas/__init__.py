@@ -1,20 +1,10 @@
-<<<<<<< HEAD
-
-from schemas.manutencao import ManutencaoSchema
-from schemas.ativo import (
-    AtivoSchema, AtivoUpdateSchema, AtivoBuscaSchema, AtivoViewSchema, AtivoBuscaFiltroSchema,
-    ListagemAtivosSchema, AtivoDelSchema,
-    apresenta_ativo, apresenta_ativos
-)
-from schemas.error import ErrorSchema
-=======
 from typing import List
 from model.ativo import Ativo
 from schemas.manutencao import (
     ManutencaoSchema, 
     ManutencaoBuscaSchema, 
     ManutencaoUpdateSchema,
-    ManutencaoDelSchema # ADICIONADO: Exporta o novo schema
+    ManutencaoDelSchema
 )
 from schemas.ativo import (
     AtivoSchema, 
@@ -58,4 +48,3 @@ def apresenta_ativos(ativos: List[Ativo]):
 
     return {"ativos": result}
 
->>>>>>> 7de88b0 (Atualizações Finais do Back-End)
